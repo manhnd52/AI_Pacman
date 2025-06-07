@@ -48,7 +48,7 @@ class RandomGhost(GhostAgent): # Kế thừa từ GhostAgent
         for a in state.getLegalActions(self.index):
             dist[a] = 1.0
         dist.normalize()
-        # print("RandomGhost distribution:", dist)
+        
         return dist
 
 

@@ -124,17 +124,41 @@ class SuperGhost(GhostAgent):
             return ceil(pos[0] - 1), pos[1]
         elif direction == (1, 0):
             return floor(pos[0] + 1), pos[1]
-
     
+    def checkValidPosition(self, state, pos):
+        walls = state.getWalls()
+        nx = int(pos[0])
+        ny = int(pos[1])
+        cols, rows = walls.width, walls.height
+        if 0 < nx < cols and 0 < ny < rows and not walls[nx][ny]:
+            return True
+        return False
+    
+    def predictPacmanPosition(self, state, max_steps=5):
+        pos = state.getPacmanPosition()
+        direction = state.getPacmanState().configuration.direction
+        vector = Actions.directionToVector(direction)
+        walls = state.getWalls()
+
+        for _ in range(max_steps):
+            next_pos = (pos[0] + vector[0], pos[1] + vector[1])
+            if not (0 <= int(next_pos[0]) < walls.width and 
+                    0 <= int(next_pos[1]) < walls.height and 
+                    not walls[int(next_pos[0])][int(next_pos[1])]):
+                break
+            pos = next_pos
+        return pos
+
     def getDistribution(self, state):
         ghostState = state.getGhostState(self.index)
         legalActions = state.getLegalActions(self.index)
         legalActionsVector = [Actions.directionToVector(a) for a in legalActions]
-        # print(legalActions)  # Loại bỏ hành động dừng lại
         pos = state.getGhostPosition(self.index)
         isScared = ghostState.scaredTimer > 0
         pacmanPosition = state.getPacmanPosition()
-        # print(f"Ghost index: {self.index} Ghost Position: {pos} Pacman Position: {pacmanPosition}")
+        walls = state.getWalls()
+        position = pacmanPosition
+
 
         conf = ghostState.configuration
         reverse = Actions.reverseDirection(conf.direction)
@@ -154,14 +178,14 @@ class SuperGhost(GhostAgent):
         # for pos in ghostPos:
         #     walls[int(pos[0])][int(pos[1])] = 1  # Đánh dấu vị trí của ghost là tường
 
-        heapq.heappush(open_set, (self.heuristic(pos, pacmanPosition), 0, []))
+        heapq.heappush(open_set, (self.heuristic(pos, position), 0, []))
 
         bestAction = "hello"  # Mặc định là không di chuyển
 
         while open_set:
             f, g, path = heapq.heappop(open_set)
             current = path[-1] if path else pos  # Lấy node hiện tại từ path, nếu path rỗng thì dùng ghost_pos
-            if current == pacmanPosition:
+            if current == position:
                 # Khi tìm ra được đường đi đến target, lấy hướng đi tiếp theo bằng cách lấy node đầu tiên trong path - vị trí hiện tại của ghost
                 if path:
                     move = (path[0][0] - pos[0], path[0][1] - pos[1])
@@ -194,7 +218,7 @@ class SuperGhost(GhostAgent):
                     if next_node not in visited:
                         # print(next_node, end=" ")
                         heapq.heappush(open_set, (
-                            g + 1 + self.heuristic(next_node, pacmanPosition),
+                            g + 1 + self.heuristic(next_node, position),
                             g + 1,
                             path + [next_node]
                         ))
@@ -213,8 +237,11 @@ class SuperGhost(GhostAgent):
         else:
             dist[bestAction] = 1
 
-        # print(legalActions)
         if bestAction not in legalActions:
             input()
-          # Debugging pause
+            
         return dist
+
+
+
+## Thêm ghost mới tại đây
