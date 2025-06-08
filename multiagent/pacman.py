@@ -588,11 +588,11 @@ def readCommand(argv):
 
     args['ghosts'] = []
     # Choose a ghost agent
-    if options.ghost == "RandomChoice": 
-        for i in range(options.numGhosts): 
-            ghostType = loadAgent(random.choice(["DirectionalGhost", "SuperGhost"]), noKeyboard)
-            print(ghostType)
-            args['ghosts'].append(ghostType(i+1))
+    if options.ghost == "RandomChoice":
+        ghostType = loadAgent('SuperGhost', noKeyboard)
+        args['ghosts'].append(ghostType(1))
+        ghostType = loadAgent('SuperGhost2', noKeyboard)
+        args['ghosts'].append(ghostType(2))     
     else: 
         ghostType = loadAgent(options.ghost, noKeyboard)
         args['ghosts'] = [ghostType(i+1) for i in range(options.numGhosts)]
