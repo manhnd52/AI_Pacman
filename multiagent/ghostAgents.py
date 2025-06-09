@@ -76,8 +76,8 @@ class GhostAgent(Agent):
                             path + [next_node]
                         ))
         return []
-        
-    
+
+
     def nextIntPosition(self, pos, direction):
         if direction == (0, -1):
             return pos[0], ceil(pos[1] - 1)  # South
@@ -345,4 +345,207 @@ class SuperGhost2(GhostAgent):
             
         return dist
 
+#----------------------------------------------------------------------------------------------------------------------------
+class MinimaxGhost(GhostAgent):
+    """
+    Ghost dùng thuật toán minimax.
+    Ghost sẽ chọn hành động sao cho khi tính đến các lượt đi:
+        - Pac-Man (agent 0) là MAX: tìm cách tăng giá trị đánh giá (trạng thái tốt cho Pac-Man).
+        - Các ghost (bao gồm ghost này) là MIN: tìm cách giảm giá trị đánh giá (trạng thái xấu cho Pac-Man).
+    Chúng ta giả sử hàm đánh giá (evaluationFunction) được thiết kế phù hợp với mục tiêu của ghost.
+    """
 
+    def __init__(self, index, depth=2, evaluationFunction=None):
+        self.index = index
+        self.depth = depth
+        if evaluationFunction is None:
+            self.evaluationFunction = self.defaultEvaluationFunction
+        else:
+            self.evaluationFunction = evaluationFunction
+
+    def defaultEvaluationFunction(self, state):
+        """
+        Một ví dụ hàm đánh giá cho ghost.
+        Hàm đánh giá này có thể dựa trên khoảng cách giữa ghost và Pac-Man:
+            - Nếu ghost càng gần Pac-Man, thì giá trị càng thấp (tốt cho ghost).
+            - Cần nhớ: Ở các nút lá của cây minimax,
+              giá trị cao biểu thị trạng thái tốt cho Pac-Man.
+        Do đó, ghost hướng đến việc chọn các trạng thái có giá trị nhỏ.
+        """
+        pacmanPos = state.getPacmanPosition()
+        ghostPos = state.getGhostPosition(self.index)
+        # Sử dụng khoảng cách Manhattan
+        dist = util.manhattanDistance(pacmanPos, ghostPos)
+        # Nếu ghost gần Pac-Man, trạng thái tốt (giá trị thấp).
+        return dist
+
+    def getAction(self, state):
+        """
+        Phương thức này sẽ duyệt qua các hành động hợp lệ của ghost hiện hành
+        và chọn hành động mà cho kết quả minimax là nhỏ nhất, theo mục tiêu của ghost.
+        """
+        legalActions = state.getLegalActions(self.index)
+        if not legalActions:
+            return Directions.STOP
+
+        bestScore = float("inf")
+        bestAction = None
+        # Ở gốc (depth = 0) ta duyệt qua các nước đi của ghost này
+        for action in legalActions:
+            successor = state.generateSuccessor(self.index, action)
+            score = self.minimax(successor, self.getNextAgent(state, self.index), 0)
+            if score < bestScore:
+                bestScore = score
+                bestAction = action
+        if bestAction is None:
+            return Directions.STOP
+        return bestAction
+
+    def minimax(self, state, agentIndex, depthSoFar):
+        """
+        Hàm minimax đa tác nhân:
+          - Pac-Man (agent 0) là MAX.
+          - Các ghost (agent != 0) là MIN.
+        Lưu ý: Một "ply" được định nghĩa là 1 lượt của Pac-Man và tất cả ghost.
+        """
+        # Điều kiện dừng: nếu game kết thúc hoặc đạt giới hạn độ sâu
+        if state.isWin() or state.isLose() or depthSoFar == self.depth:
+            return self.evaluationFunction(state)
+
+        numAgents = state.getNumAgents()
+        nextAgent = self.getNextAgent(state, agentIndex)
+        nextDepth = depthSoFar + 1 if nextAgent == 0 else depthSoFar
+
+        legalActions = state.getLegalActions(agentIndex)
+        if not legalActions:
+            return self.evaluationFunction(state)
+
+        # Nếu là lượt của Pac-Man (agent 0): MAX node
+        if agentIndex == 0:
+            value = float("-inf")
+            for action in legalActions:
+                successor = state.generateSuccessor(agentIndex, action)
+                value = max(value, self.minimax(successor, nextAgent, nextDepth))
+            return value
+        else:
+            # Là lượt của ghost (các tác nhân khác bao gồm cả ghost hiện hành): MIN node
+            value = float("inf")
+            for action in legalActions:
+                successor = state.generateSuccessor(agentIndex, action)
+                value = min(value, self.minimax(successor, nextAgent, nextDepth))
+            return value
+
+    def getNextAgent(self, state, currentAgent):
+        numAgents = state.getNumAgents()
+        return (currentAgent + 1) % numAgents
+
+
+#----------------------------------------------------------------------------------------------------------------------------
+class AlphaBetaGhost(GhostAgent):
+    """
+    Ghost sử dụng thuật toán minimax kết hợp với alpha-beta pruning.
+    Pac-Man (agent 0) là MAX node (tìm cách làm điểm cao – tốt cho Pac-Man),
+    còn Ghost (agent != 0) là MIN node (tìm cách làm điểm thấp – tốt cho Ghost).
+    """
+    def __init__(self, index, depth=2, evaluationFunction=None):
+        self.index = index
+        self.depth = depth
+        # Nếu không có hàm đánh giá nào được cung cấp, sử dụng hàm mặc định.
+        if evaluationFunction is None:
+            self.evaluationFunction = self.defaultEvaluationFunction
+        else:
+            self.evaluationFunction = evaluationFunction
+
+    def defaultEvaluationFunction(self, state):
+        """
+        Hàm đánh giá mặc định cho ghost sử dụng khoảng cách Manhattan giữa ghost và Pac-Man.
+        - Giá trị thấp (khoảng cách ngắn) là tốt cho ghost.
+        """
+        pacmanPos = state.getPacmanPosition()
+        ghostPos = state.getGhostPosition(self.index)
+        return util.manhattanDistance(pacmanPos, ghostPos)
+
+    def getAction(self, state):
+        """
+        Lựa chọn hành động cho ghost dựa trên thuật toán alpha-beta search.
+        Quá trình:
+          1. Lấy danh sách các hành động hợp lệ.
+          2. Với mỗi hành động, sinh ra trạng thái kế tiếp (successor)
+             và đánh giá điểm thông qua hàm alphabeta.
+          3. Vì ghost là MIN node, ta chọn hành động có điểm đánh giá nhỏ nhất.
+          4. Alpha-beta ban đầu được thiết lập với alpha = -∞, beta = +∞.
+        """
+        legalActions = state.getLegalActions(self.index)
+        if not legalActions:
+            return Directions.STOP  # Nếu không có hành động hợp lệ, ghost đứng yên.
+
+        bestAction = None
+        bestScore = float("inf")  # Ghost muốn giá trị đánh giá thấp nhất.
+        alpha = float("-inf")
+        beta = float("inf")
+
+        # Duyệt qua các hành động hợp lệ của ghost.
+        for action in legalActions:
+            successor = state.generateSuccessor(self.index, action)
+            score = self.alphabeta(successor, self.getNextAgent(state, self.index), 0, alpha, beta)
+            # Nếu hành động này cho điểm thấp hơn, cập nhật bestScore và bestAction.
+            if score < bestScore:
+                bestScore = score
+                bestAction = action
+            # Khi ghost chọn hành động, nó là MIN node nên cập nhật beta.
+            beta = min(beta, bestScore)
+        if bestAction is None:
+            return Directions.STOP
+        return bestAction
+
+    def alphabeta(self, state, agentIndex, depthSoFar, alpha, beta):
+        """
+        Thuật toán alpha-beta search đệ quy cho trò chơi đa tác nhân.
+        - Nếu đạt điều kiện dừng (trạng thái thắng/thua hoặc đạt độ sâu tối đa),
+          trả về giá trị của state theo hàm đánh giá.
+        - Nếu đến lượt của Pac-Man (agentIndex == 0, MAX node):
+            Giá trị được tối đa hoá; cập nhật alpha.
+            Nếu value > beta, cắt bỏ (prune) nhánh.
+        - Nếu đến lượt của ghost (agentIndex != 0, MIN node):
+            Giá trị được tối thiểu hoá; cập nhật beta.
+            Nếu value < alpha, cắt bỏ nhánh.
+        """
+        # Điều kiện dừng: game đã kết thúc hoặc đạt tới độ sâu quy định.
+        if state.isWin() or state.isLose() or depthSoFar == self.depth:
+            return self.evaluationFunction(state)
+
+        numAgents = state.getNumAgents()
+        nextAgent = self.getNextAgent(state, agentIndex)
+        # Tăng depth: mỗi khi lượt của Pac-Man đến, chúng ta coi đó là một "ply".
+        nextDepth = depthSoFar + 1 if nextAgent == 0 else depthSoFar
+
+        legalActions = state.getLegalActions(agentIndex)
+        if not legalActions:
+            return self.evaluationFunction(state)
+
+        # Nếu đến lượt của Pac-Man: MAX node
+        if agentIndex == 0:
+            value = float("-inf")
+            for action in legalActions:
+                successor = state.generateSuccessor(agentIndex, action)
+                value = max(value, self.alphabeta(successor, nextAgent, nextDepth, alpha, beta))
+                # Nếu giá trị vượt quá beta, không cần duyệt thêm, cắt nhánh.
+                if value > beta:
+                    return value
+                alpha = max(alpha, value)
+            return value
+        else:
+            # Nếu đến lượt của ghost: MIN node
+            value = float("inf")
+            for action in legalActions:
+                successor = state.generateSuccessor(agentIndex, action)
+                value = min(value, self.alphabeta(successor, nextAgent, nextDepth, alpha, beta))
+                # Nếu giá trị nhỏ hơn alpha, cắt nhánh (prune).
+                if value < alpha:
+                    return value
+                beta = min(beta, value)
+            return value
+
+    def getNextAgent(self, state, currentAgent):
+        numAgents = state.getNumAgents()
+        return (currentAgent + 1) % numAgents
