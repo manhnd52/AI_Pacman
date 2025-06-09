@@ -586,9 +586,16 @@ def readCommand(argv):
         options.numQuiet = int(agentOpts['numTrain'])
         options.numIgnore = int(agentOpts['numTrain'])
 
+    args['ghosts'] = []
     # Choose a ghost agent
-    ghostType = loadAgent(options.ghost, noKeyboard)
-    args['ghosts'] = [ghostType(i+1) for i in range(options.numGhosts)]
+    if options.ghost == "RandomChoice":
+        ghostType = loadAgent('SuperGhost', noKeyboard)
+        args['ghosts'].append(ghostType(1))
+        ghostType = loadAgent('SuperGhost2', noKeyboard)
+        args['ghosts'].append(ghostType(2))     
+    else: 
+        ghostType = loadAgent(options.ghost, noKeyboard)
+        args['ghosts'] = [ghostType(i+1) for i in range(options.numGhosts)]
 
     # Choose a display format
     if options.quietGraphics:
