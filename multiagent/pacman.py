@@ -588,14 +588,28 @@ def readCommand(argv):
 
     args['ghosts'] = []
     # Choose a ghost agent
-    if options.ghost == "RandomChoice":
-        ghostType = loadAgent('SuperGhost', noKeyboard)
-        args['ghosts'].append(ghostType(1))
-        ghostType = loadAgent('SuperGhost2', noKeyboard)
-        args['ghosts'].append(ghostType(2))     
-    else: 
+    # if options.ghost == "RandomChoice":
+    #     ghostType = loadAgent('SuperGhost', noKeyboard)
+    #     args['ghosts'].append(ghostType(1))
+    #     ghostType = loadAgent('SuperGhost2', noKeyboard)
+    #     args['ghosts'].append(ghostType(2))
+    # else:
+    #     ghostType = loadAgent(options.ghost, noKeyboard)
+    #     args['ghosts'] = [ghostType(i+1) for i in range(options.numGhosts)]
+
+    if options.ghost is not None and ',' in options.ghost:
+        ghost_types = options.ghost.split(',')
+        for idx, ghost_class_name in enumerate(ghost_types):
+            ghostType = loadAgent(ghost_class_name.strip(), noKeyboard)
+            # Nếu muốn truyền thêm tham số cho từng ghost, sửa dòng dưới thành ghostType(idx+1, ...) hoặc truyền dict option!
+            args['ghosts'].append(ghostType(idx + 1))
+        # Nếu truyền ít hơn số ghost, tự động thêm ghost cuối cùng cho đủ
+        while len(args['ghosts']) < options.numGhosts:
+            ghostType = loadAgent(ghost_types[-1].strip(), noKeyboard)
+            args['ghosts'].append(ghostType(len(args['ghosts']) + 1))
+    else:
         ghostType = loadAgent(options.ghost, noKeyboard)
-        args['ghosts'] = [ghostType(i+1) for i in range(options.numGhosts)]
+        args['ghosts'] = [ghostType(i + 1) for i in range(options.numGhosts)]
 
     # Choose a display format
     if options.quietGraphics:
@@ -739,6 +753,8 @@ if __name__ == '__main__':
     """
     args = readCommand(sys.argv[1:])  # Get game components based on input
     runGames(**args)
+
+
 
     # import cProfile
     # cProfile.run("runGames( **args )")
