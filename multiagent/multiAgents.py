@@ -112,7 +112,7 @@ class MultiAgentSearchAgent(Agent):
     is another abstract class.
     """
 
-    def __init__(self, evalFn = 'betterEvaluationFunction', depth = '2'):
+    def __init__(self, evalFn = 'betterEvaluationFunction', depth = '3'):
         self.index = 0 # Pacman is always agent index 0
         self.evaluationFunction = util.lookup(evalFn, globals())
         self.depth = int(depth)
@@ -292,7 +292,7 @@ def betterEvaluationFunction(currentGameState: GameState):
         minFoodDist = min(manhattanDistance(pos, f) for f in food)
         score += 10.0 / minFoodDist
     else:
-        score += 100  # no food left is very good
+        score += 100                # no food left is very good
 
     # Distance to the closest capsule
     if capsules:
