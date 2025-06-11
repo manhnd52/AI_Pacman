@@ -587,15 +587,6 @@ def readCommand(argv):
         options.numIgnore = int(agentOpts['numTrain'])
 
     args['ghosts'] = []
-    # Choose a ghost agent
-    # if options.ghost == "RandomChoice":
-    #     ghostType = loadAgent('SuperGhost', noKeyboard)
-    #     args['ghosts'].append(ghostType(1))
-    #     ghostType = loadAgent('SuperGhost2', noKeyboard)
-    #     args['ghosts'].append(ghostType(2))
-    # else:
-    #     ghostType = loadAgent(options.ghost, noKeyboard)
-    #     args['ghosts'] = [ghostType(i+1) for i in range(options.numGhosts)]
 
     if options.ghost is not None and ',' in options.ghost:
         ghost_types = options.ghost.split(',')

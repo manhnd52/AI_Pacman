@@ -48,12 +48,6 @@ class GhostAgent(Agent):
             f, g, path = heapq.heappop(open_set)
             current = path[-1] if path else start
             if current == goal:
-                # if len(path) == 0:
-                #     print("_____A* search failed_____")
-                #     print("Pacman position:", state.getPacmanPosition())
-                #     print("Ghost position:", state.getGhostPosition(self.index))
-                #     print("Goal position:", goal)
-                #     print("______")
                 return path
             
             if current in visited:
@@ -64,7 +58,6 @@ class GhostAgent(Agent):
             for d in directions:
                 if d not in legalStartDirections and current == start:
                     continue
-                # print("Current direction:", d)
                 nx, ny = self.nextIntPosition(current, d)
                 nx, ny = int(nx), int(ny)
                 if self.checkValidPosition(state, (nx, ny)):
@@ -101,14 +94,12 @@ class RandomGhost(GhostAgent): # Kế thừa từ GhostAgent
     "A ghost that chooses a legal action uniformly at random."
     def __init__(self, index):
         self.index = index
-        # ("RandomGhost initialized with index:", index)
 
     def getDistribution(self, state):
         dist = util.Counter()
         for a in state.getLegalActions(self.index):
             dist[a] = 1.0
         dist.normalize()
-        # print("RandomGhost distribution:", dist)
         return dist
 
 
@@ -157,7 +148,7 @@ class DirectionalGhost(GhostAgent):
         dist.normalize()
         return dist
     
-class SuperGhost(GhostAgent):
+class AStarGhost(GhostAgent):
     "A ghost that prefers to rush Pacman, or flee when scared, with a higher probability."
 
     def __init__(self, index, prob_attack=1, prob_scaredFlee=1):
@@ -203,7 +194,7 @@ class SuperGhost(GhostAgent):
         return dist
 
     
-class SuperGhost2(GhostAgent):
+class BlockingGhost(GhostAgent):
     "A ghost that prefers to rush Pacman, or flee when scared, with a higher probability."
 
     def __init__(self, index, prob_attack=1, prob_scaredFlee=1):
@@ -215,27 +206,32 @@ class SuperGhost2(GhostAgent):
         return abs(a[0] - b[0]) + abs(a[1] - b[1])
     
     
-    def predictPacmanPosition(self, state : GameState, max_steps=5):
+    def predictPacmanPosition(self, state : GameState, step=5):
         pos = state.getPacmanPosition()
         successor = state
-        
-        for _ in range(max_steps):
-            
-            direction = successor.getPacmanState().configuration.direction
-            if direction in successor.getLegalActions(0): # Nếu Pacman có thể tiếp tục đi hướng đang đi
-                successor = successor.generateSuccessor(0, direction)
+
+        for _ in range(step):
+            pacmanLLegalActions = successor.getLegalActions(0)
+            if Directions.STOP in pacmanLLegalActions:
+                pacmanLLegalActions.remove(Directions.STOP)
+            reverse = Actions.reverseDirection(successor.getPacmanState().configuration.direction)
+            if reverse in pacmanLLegalActions:               # Nếu Pacman có thể đi ngược lại hướng đang đi
+                pacmanLLegalActions.remove(reverse)          # Loại bỏ hành động đi ngược lại hướng đang đi, do có một con ma dí đuôi r
+
+            if len(pacmanLLegalActions) == 1:                           # Nếu Pacman có thể tiếp tục đi hướng đang đi
+                successor = successor.generateSuccessor(0, pacmanLLegalActions[0])
                 pos = successor.getPacmanPosition()
                 continue
             else:
-                pacman_legal_actions = successor.getLegalActions(0)
-                if len(pacman_legal_actions) == 0:
+                if len(pacmanLLegalActions) == 0:
                     break
-                elif len(pacman_legal_actions) == 1:  # Nếu Pacman chỉ có một hành động hợp lệ
-                    best_action = pacman_legal_actions[0]
-                else:  # Nếu Pacman có nhiều hành động hợp lệ
-                    scores = self.scoreForPacmanAction(successor, pacman_legal_actions)
+                else:                                                   # Nếu Pacman có nhiều hành động hợp lệ
+                    scores = self.scoreForPacmanAction(successor, pacmanLLegalActions)
                     best_score = max(scores) if scores else 0
-                    best_actions = [action for action, score in zip(pacman_legal_actions, scores) if score == best_score]
+                    best_actions = [action for action, score in zip(pacmanLLegalActions, scores) if score == best_score]
+                    #pacmanDirection = successor.getPacmanState().configuration.direction
+                    #if pacmanDirection in best_actions:  # Nếu Pacman có thể tiếp tục đi hướng đang đi
+                        ##continue
                     best_action = random.choice(best_actions)
 
                 successor = successor.generateSuccessor(0, best_action)
@@ -261,7 +257,10 @@ class SuperGhost2(GhostAgent):
         foodScore = [sum(distanceToFood[i]) / len(distanceToFood[i]) if len(distanceToFood[i]) > 0 else 0 for i in range(len(nextPacmanPos))]
 
         # Sum score
-        scores = [1/(capsuleScore[i]+0.1)*2 - 1/ghostScore[i] + 1/foodScore[i] for i in range(len(nextPacmanPos))]
+        scores = [1 / (capsuleScore[i] + 0.1) * 2 
+                  - 1 / (ghostScore[i] + 0.1) 
+                  + 1 / (foodScore[i] + 0.1)
+                for i in range(len(nextPacmanPos))]
         return scores
 
     
@@ -278,7 +277,7 @@ class SuperGhost2(GhostAgent):
         pacmanStep = 0
         while len(path) > pacmanStep and pacmanStep < max_prediction_steps:
             pacmanStep += 1
-            nextPacmanPosition = self.predictPacmanPosition(state, max_steps=pacmanStep)
+            nextPacmanPosition = self.predictPacmanPosition(state, step=pacmanStep)
             path = self.a_star_search(state, nextPacmanPosition)
         return path if path else [first_step]               # Khi vị trí PACMAN dự định tới trùng với vị trí của ma, trả về đường đi từ vị trí hiện tại của ma đến vị trí PACMAN hiện tại.
     
@@ -289,9 +288,6 @@ class SuperGhost2(GhostAgent):
         pacmanPosition = state.getPacmanPosition()
         pos = state.getGhostPosition(self.index)
 
-        # Dự đoán vị trí của Pacman trong tương lai
-        predictposition = self.predictPacmanPosition(state, max_steps=5)
-        # print("Predicted Pacman position:", predictposition)
 
         conf = ghostState.configuration
         reverse = Actions.reverseDirection(conf.direction)
@@ -301,30 +297,9 @@ class SuperGhost2(GhostAgent):
         if isScared:
             speed = 0.5
 
-        # Sử dụng thuật toán A* để tìm đường đi đến Pacman
+        # Tìm cách chặn Pacman
         searchPath = self.blockPacmanRoute(state)
         bestAction = (searchPath[0][0] - pos[0], searchPath[0][1] - pos[1])  if searchPath else Directions.STOP
-        if bestAction == Directions.STOP:
-            print("Ghost index:", self.index, conf.direction)
-            ghost1 = state.getGhostPosition(1)
-            ghost2 = state.getGhostPosition(2)
-            map = state.getWalls()
-            for i in range(map.width):
-                    for j in range(map.height):
-                        if (i, j) == pacmanPosition:
-                            map[i][j] = "O"
-                        elif (i, j) == ghost1:
-                            map[i][j] = "1"
-                        elif (i, j) == ghost2:
-                            map[i][j] = "2"
-                        elif map[i][j] == 0:
-                            map[i][j] = " "
-                        else:
-                            map[i][j] = "#"
-            print(map)
-            print(searchPath)
-            print("Ghost and PACMAN position: ", ghost2, pacmanPosition)
-            input()
         bestAction = Actions.vectorToDirection(bestAction)
 
         # Construct distribution
