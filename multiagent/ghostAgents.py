@@ -339,61 +339,73 @@ class MinimaxGhost(GhostAgent):
             self.evaluationFunction = evaluationFunction
 
     def defaultEvaluationFunction(self, state):
-        pacmanPos = state.getPacmanPosition()
-        ghostPos = state.getGhostPosition(self.index)
-        ghosts = [state.getGhostPosition(i) for i in range(1, state.getNumAgents())]
-        foodList = state.getFood().asList()
-        capsules = state.getCapsules()
+        """
+        - Ghost là MIN: điểm CAO = trạng thái xấu cho ghost.
+        - Pac-Man là MAX: điểm CAO = trạng thái tốt cho Pac-Man.
+        Hàm dưới ép ghost:
+          • rời spawn nhanh,
+          • đuổi Pac-Man khi bình thường,
+          • bỏ chạy xa khi scared,
+          • không lấn át bởi những yếu tố phụ.
+        """
 
-        numFood = len(foodList)
-        numCapsule = len(capsules)
+        # --- Vị trí & khoảng cách cơ bản ---
+        pac     = state.getPacmanPosition()
+        ghost   = state.getGhostPosition(self.index)
+        d_spawn = util.manhattanDistance(ghost, (9, 5))
+        d_pac   = util.manhattanDistance(ghost, pac)
+
+        gState    = state.getGhostState(self.index)
+        isScared  = gState.scaredTimer > 0
+        scaredT   = gState.scaredTimer
 
         score = 0
 
-        distToSpawn = util.manhattanDistance(ghostPos, (9,5))
-        if distToSpawn <= 1:
-            score += 200
+        # --- 1.
+        score += 3000 / (d_spawn + 1)
 
-        ghostState = state.getGhostState(self.index)
-        distToPacman = util.manhattanDistance(ghostPos, pacmanPos)
-        isScared = ghostState.scaredTimer > 0
-
+        # --- 2.
         if isScared:
-            if distToPacman <= 1:
-                score += 100000
-            score -= 1000 / (distToPacman + 1)
-        else:
-            score -= 1000 / (distToPacman + 1)
-
-            if foodList:
-                minFoodDist = min(util.manhattanDistance(pacmanPos, food) for food in foodList)
-                score -= 5.0 / (minFoodDist + 1)
-            if capsules:
-                minCapDist = min(util.manhattanDistance(pacmanPos, cap) for cap in capsules)
-                score -= 5.0 / (minCapDist + 1)
-
-            walls = state.getWalls()
-            adjacent = 0
-            x, y = pacmanPos
-            for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
-                if walls[x + dx][y + dy]:
-                    adjacent += 1
-            if adjacent >= 2:
-                score -= 40
-
-            numGhostsNear = sum(
-                1 for i, gpos in enumerate(ghosts)
-                if i + 1 != self.index and util.manhattanDistance(gpos, pacmanPos) <= 2
-            )
-            score -= 50 * numGhostsNear
-
-            if state.isWin():
+            score += 600 / (d_pac + 1)
+            if d_pac <= 3:                       # tránh va chạm khi sợ
                 score += 10000
-            if state.isLose():
-                score -= 10000
+        else:
+            # Càng gần Pac-Man điểm càng THẤP => MIN rút ngắn khoảng cách
+            score -= 600 / (d_pac + 1)
 
-        print(score, isScared, ghostPos)
+        # --- 3. Yếu tố phụ (không quá lớn) ------------------------------------
+        food  = state.getFood().asList()
+        caps  = state.getCapsules()
+
+        if food:
+            minFood = min(util.manhattanDistance(pac, f) for f in food)
+            score -= 60 / (minFood + 1)
+
+        if caps:
+            minCap = min(util.manhattanDistance(pac, c) for c in caps)
+            score -= 80 / (minCap + 1)
+
+        # Pac-Man kẹt góc / tường
+        walls = state.getWalls()
+        x, y  = pac
+        adj   = sum(1 for dx, dy in [(-1,0),(1,0),(0,-1),(0,1)] if walls[x+dx][y+dy])
+        if adj >= 2:
+            score -= 40
+
+        # Nhiều ghost bọc quanh Pac-Man
+        ghosts = [state.getGhostPosition(i) for i in range(1, state.getNumAgents())]
+        near   = sum(1 for i, gpos in enumerate(ghosts)
+                     if i+1 != self.index and util.manhattanDistance(gpos, pac) <= 2)
+        score -= 150 * near
+
+        # --- 4. Kết thúc trận --------------------------------------------------
+        if state.isWin():
+            score += 5000
+        if state.isLose():
+            score -= 5000
+
         return score
+
 
     def getAction(self, state):
         """
