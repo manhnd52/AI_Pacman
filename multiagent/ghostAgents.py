@@ -374,10 +374,64 @@ class MinimaxGhost(GhostAgent):
         """
         pacmanPos = state.getPacmanPosition()
         ghostPos = state.getGhostPosition(self.index)
-        # Sử dụng khoảng cách Manhattan
-        dist = util.manhattanDistance(pacmanPos, ghostPos)
-        # Nếu ghost gần Pac-Man, trạng thái tốt (giá trị thấp).
-        return dist
+        ghosts = [state.getGhostPosition(i) for i in range(1, state.getNumAgents())]
+        foodList = state.getFood().asList()
+        capsules = state.getCapsules()
+        pacmanScore = state.getScore()
+
+        numFood = len(foodList)
+        numCapsule = len(capsules)
+        #1
+        score = 100 * numFood + 50 * numCapsule
+        #2
+        if foodList:
+            minFoodDist = min(util.manhattanDistance(pacmanPos, food) for food in foodList)
+            score -= 10.0 / (minFoodDist + 1)
+        else:
+            score -= 200  # Pacman ăn hết food, rất xấu cho ghost
+
+        if capsules:
+            minCapDist = min(util.manhattanDistance(pacmanPos, cap) for cap in capsules)
+            score -= 20.0 / (minCapDist + 1)
+        else:
+            score -= 100  # Pacman ăn hết capsule, ghost dễ bị ăn
+        # 3
+        ghostState = state.getGhostState(self.index)
+        distToPacman = util.manhattanDistance(ghostPos, pacmanPos)
+
+        if ghostState.scaredTimer > 0:
+            score += 40 * distToPacman
+            if distToPacman == 0:
+                score -= 500
+        else:
+            if distToPacman <= 1:
+                score -= 200
+            else:
+                score -= 5.0 / (distToPacman + 1)
+        #4
+        walls = state.getWalls()
+        adjacent = 0
+        x, y = pacmanPos
+        for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+            if walls[x + dx][y + dy]:
+                adjacent += 1
+        if adjacent >= 2:
+            score -= 20
+        #5
+        numGhostsNear = sum(
+            1 for i, gpos in enumerate(ghosts)
+            if i + 1 != self.index and util.manhattanDistance(gpos, pacmanPos) <= 2
+        )
+        score -= 15 * numGhostsNear
+        #6
+        if state.isWin():
+            score -= 10000
+        if state.isLose():
+            score += 10000
+        #7
+        score += pacmanScore
+
+        return score
 
     def getAction(self, state):
         """
