@@ -186,8 +186,7 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
             numAgents = state.getNumAgents()
             nextAgent = (agentIndex + 1) % numAgents
             nextDepth = depthSoFar + 1 if nextAgent == 0 else depthSoFar
-
-            legalActions = state.getLegalActions(agentIndex)
+            legalActions = [a for a in state.getLegalActions(agentIndex) if a != Directions.STOP]
             if not legalActions:
                 return self.evaluationFunction(state)
 
@@ -215,7 +214,7 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
         bestAction = None
         alpha = float("-inf")
         beta = float("inf")
-        for action in gameState.getLegalActions(0):
+        for action in [a for a in gameState.getLegalActions(0) if a != Directions.STOP]:
             successor = gameState.generateSuccessor(0, action)
             score = alphabeta(successor, 1, 0, alpha, beta)
             if score > bestScore:
@@ -224,8 +223,8 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
             alpha = max(alpha, bestScore)
         if bestAction is None:
             return Directions.STOP
-        return bestAction
 
+        return bestAction
 
 class ExpectimaxAgent(MultiAgentSearchAgent):
     """
@@ -276,43 +275,70 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
 
 
 def betterEvaluationFunction(currentGameState: GameState):
-    from util import manhattanDistance
-
     pos = currentGameState.getPacmanPosition()
     food = currentGameState.getFood().asList()
     capsules = currentGameState.getCapsules()
     ghostStates = currentGameState.getGhostStates()
     scaredTimes = [ghostState.scaredTimer for ghostState in ghostStates]
 
-    # Base score
     score = currentGameState.getScore()
 
-    # Distance to the closest food
     if food:
         minFoodDist = min(manhattanDistance(pos, f) for f in food)
         score += 10.0 / minFoodDist
     else:
-        score += 100                # no food left is very good
+        score += 100
 
-    # Distance to the closest capsule
     if capsules:
         minCapDist = min(manhattanDistance(pos, cap) for cap in capsules)
         score += 5.0 / (minCapDist + 1)
 
-    # Ghost evaluations
+    dangerousGhosts = []
+    ghostPositions = []
     for i, ghost in enumerate(ghostStates):
         dist = manhattanDistance(pos, ghost.getPosition())
         if scaredTimes[i] > 0:
-            score += 10.0 / (dist + 1)  # chase scared ghosts
+            score += 10.0 / (dist + 1)  
         else:
             if dist <= 1:
-                score -= 100  # avoid dangerous ghosts
+                score -= 100  
             elif dist <= 3:
                 score -= 5 / dist
 
-    # Win/Lose conditions
+    for i, ghost in enumerate(ghostStates):
+        ghostPos = ghost.getPosition()
+        ghostPositions.append(ghostPos)
+
+        if scaredTimes[i] == 0:
+            dangerousGhosts.append(ghostPos)
+
+    if len(dangerousGhosts) >= 2:
+        g1 = dangerousGhosts[0]
+        g2 = dangerousGhosts[1]
+
+        x1 = pos[0] - g1[0]
+        x2 = pos[0] - g2[0]
+        y1 = pos[1] - g1[1]
+        y2 = pos[1] - g2[1]
+
+        if (abs(x1) + abs(y1) <= 3) and (abs(x2) + abs(y2) <= 3):
+            if (x1 * x2 <= 0) and (y1 * y2 <= 0):
+                score -= 50  
+            elif (x1 * x2 <= 0) or (y1 * y2 <= 0):
+                score -= 20  
+    
+            
+
+    width = currentGameState.getWalls().width
+    height = currentGameState.getWalls().height
+    centerX, centerY = width / 2.0, height / 2.0
+    distToCenter = abs(pos[0] - centerX) + abs(pos[1] - centerY)
+
+    score -= 0.6 * distToCenter
+
+
     if currentGameState.isWin():
-        return float('inf')
+        return currentGameState.getScore()
     if currentGameState.isLose():
         return float('-inf')
 

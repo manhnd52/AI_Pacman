@@ -5,6 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b14f4dbb-6c9e-4991-ad6e-6afb3026a58a" name="Changes" comment="&#10;.">
+      <change beforePath="$PROJECT_DIR$/.idea/AI_Pacman.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/AI_Pacman.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/multiagent/ghostAgents.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/ghostAgents.py" afterDir="false" />
     </list>
@@ -15,7 +16,6 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-    <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {
@@ -23,12 +23,12 @@
     &quot;assignee&quot;: &quot;Khoi20225869&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/manhnd52/AI_Pacman.git&quot;,
-    &quot;accountId&quot;: &quot;d0e3611b-bb77-4dac-9999-faf8652c7bb8&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/manhnd52/AI_Pacman.git",
+    "accountId": "ddbacb7e-7470-48b0-bb2a-bef2d5d78a9d"
   }
-}</component>
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
 }</component>
@@ -37,33 +37,33 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;Python.game.executor&quot;: &quot;Run&quot;,
-    &quot;Python.keyboardAgents.executor&quot;: &quot;Run&quot;,
-    &quot;Python.layout.executor&quot;: &quot;Run&quot;,
-    &quot;Python.main.executor&quot;: &quot;Debug&quot;,
-    &quot;Python.multiAgents.executor&quot;: &quot;Run&quot;,
-    &quot;Python.pacman.executor&quot;: &quot;Run&quot;,
-    &quot;Python.pacmanAgents.executor&quot;: &quot;Run&quot;,
-    &quot;Python.projectParams.executor&quot;: &quot;Run&quot;,
-    &quot;Python.testClasses.executor&quot;: &quot;Run&quot;,
-    &quot;Python.tạm.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;E:/Hoc/AI_Pacman&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Python.game.executor": "Run",
+    "Python.keyboardAgents.executor": "Run",
+    "Python.layout.executor": "Run",
+    "Python.main.executor": "Debug",
+    "Python.multiAgents.executor": "Run",
+    "Python.pacman.executor": "Run",
+    "Python.pacmanAgents.executor": "Run",
+    "Python.projectParams.executor": "Run",
+    "Python.testClasses.executor": "Run",
+    "Python.tạm.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "D:/Hoc/AI/AI_Pacman",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected="Python.game">
     <configuration name="game" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="AI_Pacman" />
@@ -219,6 +219,7 @@
       <workItem from="1749482049538" duration="9729000" />
       <workItem from="1749562433952" duration="5281000" />
       <workItem from="1749602364179" duration="8042000" />
+      <workItem from="1749611863579" duration="6407000" />
     </task>
     <task id="LOCAL-00001" summary="Update AlphaBetaGhost + MinimaxGhost">
       <option name="closed" value="true" />
