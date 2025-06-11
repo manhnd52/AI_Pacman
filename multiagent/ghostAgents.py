@@ -339,51 +339,48 @@ class MinimaxGhost(GhostAgent):
             self.evaluationFunction = evaluationFunction
 
     def defaultEvaluationFunction(self, state):
-        """
-        Một ví dụ hàm đánh giá cho ghost.
-        Hàm đánh giá này có thể dựa trên khoảng cách giữa ghost và Pac-Man:
-            - Nếu ghost càng gần Pac-Man, thì giá trị càng thấp (tốt cho ghost).
-            - Cần nhớ: Ở các nút lá của cây minimax,
-              giá trị cao biểu thị trạng thái tốt cho Pac-Man.
-        Do đó, ghost hướng đến việc chọn các trạng thái có giá trị nhỏ.
-        """
         pacmanPos = state.getPacmanPosition()
         ghostPos = state.getGhostPosition(self.index)
         ghosts = [state.getGhostPosition(i) for i in range(1, state.getNumAgents())]
         foodList = state.getFood().asList()
         capsules = state.getCapsules()
-        pacmanScore = state.getScore()
-
         numFood = len(foodList)
         numCapsule = len(capsules)
-        #1
-        score = 100 * numFood + 50 * numCapsule
-        #2
+
+        score = 0
+
+        # score -= 150 * numFood
+        # score -= 100 * numCapsule
+
         if foodList:
             minFoodDist = min(util.manhattanDistance(pacmanPos, food) for food in foodList)
-            score -= 10.0 / (minFoodDist + 1)
-        else:
-            score -= 200  # Pacman ăn hết food, rất xấu cho ghost
-
+            score -= 5.0 / (minFoodDist + 1)
         if capsules:
             minCapDist = min(util.manhattanDistance(pacmanPos, cap) for cap in capsules)
-            score -= 20.0 / (minCapDist + 1)
-        else:
-            score -= 100  # Pacman ăn hết capsule, ghost dễ bị ăn
-        # 3
+            score -= 5.0 / (minCapDist + 1)
+
         ghostState = state.getGhostState(self.index)
         distToPacman = util.manhattanDistance(ghostPos, pacmanPos)
+        isScared = ghostState.scaredTimer > 0
 
-        if ghostState.scaredTimer > 0:
-            score += 40 * distToPacman
+        if isScared:
+            score += 200 * distToPacman
+
             if distToPacman == 0:
-                score -= 500
+                score += 3000
+            elif distToPacman == 1:
+                score += 1000
         else:
-            if distToPacman <= 1:
-                score -= 200
+            if distToPacman == 0:
+                score -= 1000
+            elif distToPacman == 1:
+                score -= 500
+            elif distToPacman == 2:
+                score -= 100
             else:
-                score -= 5.0 / (distToPacman + 1)
-        #4
+                score -= 10.0 / (distToPacman + 1)
+
+        # Pacman ở góc/tường/ngõ cụt
         walls = state.getWalls()
         adjacent = 0
         x, y = pacmanPos
@@ -391,20 +388,18 @@ class MinimaxGhost(GhostAgent):
             if walls[x + dx][y + dy]:
                 adjacent += 1
         if adjacent >= 2:
-            score -= 20
-        #5
+            score -= 40
+
         numGhostsNear = sum(
             1 for i, gpos in enumerate(ghosts)
             if i + 1 != self.index and util.manhattanDistance(gpos, pacmanPos) <= 2
         )
-        score -= 15 * numGhostsNear
-        #6
+        score -= 50 * numGhostsNear
+
         if state.isWin():
-            score -= 10000
-        if state.isLose():
             score += 10000
-        #7
-        score += pacmanScore
+        if state.isLose():
+            score -= 10000
 
         return score
 
