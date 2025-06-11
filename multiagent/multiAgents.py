@@ -291,7 +291,7 @@ def betterEvaluationFunction(currentGameState: GameState):
 
     if capsules:
         minCapDist = min(manhattanDistance(pos, cap) for cap in capsules)
-        score += 5.0 / (minCapDist + 1)
+        score += 10.0 / (minCapDist + 1)
 
     dangerousGhosts = []
     ghostPositions = []
