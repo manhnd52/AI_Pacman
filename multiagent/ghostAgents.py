@@ -330,7 +330,7 @@ class MinimaxGhost(GhostAgent):
     Chúng ta giả sử hàm đánh giá (evaluationFunction) được thiết kế phù hợp với mục tiêu của ghost.
     """
 
-    def __init__(self, index, depth=2, evaluationFunction=None):
+    def __init__(self, index, depth=3, evaluationFunction=None):
         self.index = index
         self.depth = depth
         if evaluationFunction is None:
@@ -349,58 +349,49 @@ class MinimaxGhost(GhostAgent):
 
         score = 0
 
-        # score -= 150 * numFood
-        # score -= 100 * numCapsule
-
-        if foodList:
-            minFoodDist = min(util.manhattanDistance(pacmanPos, food) for food in foodList)
-            score -= 5.0 / (minFoodDist + 1)
-        if capsules:
-            minCapDist = min(util.manhattanDistance(pacmanPos, cap) for cap in capsules)
-            score -= 5.0 / (minCapDist + 1)
+        distToSpawn = util.manhattanDistance(ghostPos, (9,5))
+        if distToSpawn <= 1:
+            score += 200
 
         ghostState = state.getGhostState(self.index)
         distToPacman = util.manhattanDistance(ghostPos, pacmanPos)
         isScared = ghostState.scaredTimer > 0
 
         if isScared:
-            score += 200 * distToPacman
-
-            if distToPacman == 0:
-                score += 3000
-            elif distToPacman == 1:
-                score += 1000
+            if distToPacman <= 1:
+                score += 100000
+            score -= 1000 / (distToPacman + 1)
         else:
-            if distToPacman == 0:
-                score -= 1000
-            elif distToPacman == 1:
-                score -= 500
-            elif distToPacman == 2:
-                score -= 100
-            else:
-                score -= 10.0 / (distToPacman + 1)
+            score -= 1000 / (distToPacman + 1)
 
-        # Pacman ở góc/tường/ngõ cụt
-        walls = state.getWalls()
-        adjacent = 0
-        x, y = pacmanPos
-        for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
-            if walls[x + dx][y + dy]:
-                adjacent += 1
-        if adjacent >= 2:
-            score -= 40
+            if foodList:
+                minFoodDist = min(util.manhattanDistance(pacmanPos, food) for food in foodList)
+                score -= 5.0 / (minFoodDist + 1)
+            if capsules:
+                minCapDist = min(util.manhattanDistance(pacmanPos, cap) for cap in capsules)
+                score -= 5.0 / (minCapDist + 1)
 
-        numGhostsNear = sum(
-            1 for i, gpos in enumerate(ghosts)
-            if i + 1 != self.index and util.manhattanDistance(gpos, pacmanPos) <= 2
-        )
-        score -= 50 * numGhostsNear
+            walls = state.getWalls()
+            adjacent = 0
+            x, y = pacmanPos
+            for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+                if walls[x + dx][y + dy]:
+                    adjacent += 1
+            if adjacent >= 2:
+                score -= 40
 
-        if state.isWin():
-            score += 10000
-        if state.isLose():
-            score -= 10000
+            numGhostsNear = sum(
+                1 for i, gpos in enumerate(ghosts)
+                if i + 1 != self.index and util.manhattanDistance(gpos, pacmanPos) <= 2
+            )
+            score -= 50 * numGhostsNear
 
+            if state.isWin():
+                score += 10000
+            if state.isLose():
+                score -= 10000
+
+        print(score, isScared, ghostPos)
         return score
 
     def getAction(self, state):
