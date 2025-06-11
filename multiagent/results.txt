@@ -1,0 +1,157 @@
+=== Bắt đầu chạy test lúc Wed 06/11/2025  9:53:03.64 
+==== RandomGhost vs ReflexAgent ==== 
+Pacman emerges victorious! Score: 2070
+Pacman emerges victorious! Score: 2070
+Pacman emerges victorious! Score: 2070
+Pacman emerges victorious! Score: 2270
+Pacman emerges victorious! Score: 2070
+Pacman emerges victorious! Score: 1870
+Pacman emerges victorious! Score: 2070
+Pacman emerges victorious! Score: 1870
+Pacman emerges victorious! Score: 2070
+Pacman emerges victorious! Score: 1870
+Pacman died! Score: 700
+Pacman emerges victorious! Score: 2070
+Pacman emerges victorious! Score: 1670
+Pacman died! Score: 1000
+Pacman emerges victorious! Score: 2070
+Pacman emerges victorious! Score: 2270
+Pacman emerges victorious! Score: 1870
+Pacman died! Score: 110
+Pacman emerges victorious! Score: 1870
+Pacman emerges victorious! Score: 1470
+Pacman emerges victorious! Score: 2270
+Pacman died! Score: 850
+Pacman emerges victorious! Score: 1870
+Pacman emerges victorious! Score: 2070
+Pacman emerges victorious! Score: 2070
+Pacman emerges victorious! Score: 1870
+Pacman died! Score: 1050
+Pacman emerges victorious! Score: 1670
+Pacman emerges victorious! Score: 1870
+Pacman emerges victorious! Score: 2070
+Pacman emerges victorious! Score: 1670
+Pacman died! Score: 460
+Pacman died! Score: 830
+Pacman died! Score: 1060
+Pacman emerges victorious! Score: 2270
+Pacman emerges victorious! Score: 1870
+Pacman emerges victorious! Score: 2070
+Pacman emerges victorious! Score: 1870
+Pacman emerges victorious! Score: 1870
+Pacman died! Score: 440
+Pacman emerges victorious! Score: 1870
+Pacman died! Score: 330
+Pacman emerges victorious! Score: 2070
+Pacman died! Score: 440
+Pacman emerges victorious! Score: 1870
+Pacman emerges victorious! Score: 1670
+Pacman emerges victorious! Score: 1870
+Pacman emerges victorious! Score: 1870
+Pacman died! Score: -60
+Pacman emerges victorious! Score: 2070
+Pacman died! Score: 610
+Pacman emerges victorious! Score: 2070
+Pacman died! Score: 1040
+Pacman emerges victorious! Score: 1870
+Pacman emerges victorious! Score: 1670
+Pacman emerges victorious! Score: 2270
+Pacman emerges victorious! Score: 2070
+Pacman emerges victorious! Score: 1870
+Pacman emerges victorious! Score: 1870
+Pacman emerges victorious! Score: 2070
+Pacman died! Score: 70
+Pacman died! Score: 630
+Pacman emerges victorious! Score: 1870
+Pacman died! Score: 950
+Pacman died! Score: 850
+Pacman emerges victorious! Score: 1870
+Pacman emerges victorious! Score: 1670
+Pacman emerges victorious! Score: 1870
+Pacman died! Score: 1040
+Pacman died! Score: 1130
+Pacman emerges victorious! Score: 1670
+Pacman emerges victorious! Score: 1670
+Pacman emerges victorious! Score: 1870
+Pacman emerges victorious! Score: 2070
+Pacman died! Score: 90
+Pacman emerges victorious! Score: 1870
+Pacman emerges victorious! Score: 2070
+Pacman emerges victorious! Score: 1870
+Pacman emerges victorious! Score: 1870
+Pacman emerges victorious! Score: 1870
+Pacman emerges victorious! Score: 1870
+Pacman emerges victorious! Score: 1870
+Pacman emerges victorious! Score: 2070
+Pacman died! Score: 1150
+Pacman died! Score: 1250
+Pacman emerges victorious! Score: 1870
+Pacman died! Score: 340
+Pacman emerges victorious! Score: 1870
+Pacman emerges victorious! Score: 2070
+Pacman emerges victorious! Score: 2070
+Pacman emerges victorious! Score: 2070
+Pacman died! Score: 760
+Pacman emerges victorious! Score: 2070
+Pacman emerges victorious! Score: 1870
+Pacman died! Score: 1040
+Pacman emerges victorious! Score: 2070
+Pacman emerges victorious! Score: 1670
+Pacman emerges victorious! Score: 2270
+Pacman emerges victorious! Score: 2070
+Pacman died! Score: 460
+Average Score: 1605.3
+Scores:        2070.0, 2070.0, 2070.0, 2270.0, 2070.0, 1870.0, 2070.0, 1870.0, 2070.0, 1870.0, 700.0, 2070.0, 1670.0, 1000.0, 2070.0, 2270.0, 1870.0, 110.0, 1870.0, 1470.0, 2270.0, 850.0, 1870.0, 2070.0, 2070.0, 1870.0, 1050.0, 1670.0, 1870.0, 2070.0, 1670.0, 460.0, 830.0, 1060.0, 2270.0, 1870.0, 2070.0, 1870.0, 1870.0, 440.0, 1870.0, 330.0, 2070.0, 440.0, 1870.0, 1670.0, 1870.0, 1870.0, -60.0, 2070.0, 610.0, 2070.0, 1040.0, 1870.0, 1670.0, 2270.0, 2070.0, 1870.0, 1870.0, 2070.0, 70.0, 630.0, 1870.0, 950.0, 850.0, 1870.0, 1670.0, 1870.0, 1040.0, 1130.0, 1670.0, 1670.0, 1870.0, 2070.0, 90.0, 1870.0, 2070.0, 1870.0, 1870.0, 1870.0, 1870.0, 1870.0, 2070.0, 1150.0, 1250.0, 1870.0, 340.0, 1870.0, 2070.0, 2070.0, 2070.0, 760.0, 2070.0, 1870.0, 1040.0, 2070.0, 1670.0, 2270.0, 2070.0, 460.0
+Win Rate:      73/100 (0.73)
+Record:        Win, Win, Win, Win, Win, Win, Win, Win, Win, Win, Loss, Win, Win, Loss, Win, Win, Win, Loss, Win, Win, Win, Loss, Win, Win, Win, Win, Loss, Win, Win, Win, Win, Loss, Loss, Loss, Win, Win, Win, Win, Win, Loss, Win, Loss, Win, Loss, Win, Win, Win, Win, Loss, Win, Loss, Win, Loss, Win, Win, Win, Win, Win, Win, Win, Loss, Loss, Win, Loss, Loss, Win, Win, Win, Loss, Loss, Win, Win, Win, Win, Loss, Win, Win, Win, Win, Win, Win, Win, Win, Loss, Loss, Win, Loss, Win, Win, Win, Win, Loss, Win, Win, Loss, Win, Win, Win, Win, Loss
+==== RandomGhost vs MinimaxAgent ==== 
+Pacman emerges victorious! Score: 1870
+Pacman died! Score: 970
+Pacman emerges victorious! Score: 2070
+Pacman emerges victorious! Score: 2270
+Pacman emerges victorious! Score: 2270
+Pacman emerges victorious! Score: 2270
+Pacman emerges victorious! Score: 1870
+Pacman emerges victorious! Score: 2270
+Pacman emerges victorious! Score: 2270
+Pacman emerges victorious! Score: 1870
+Pacman died! Score: 970
+Pacman emerges victorious! Score: 2070
+Pacman emerges victorious! Score: 1870
+Pacman emerges victorious! Score: 1870
+Pacman emerges victorious! Score: 1670
+Pacman emerges victorious! Score: 1870
+Pacman emerges victorious! Score: 2070
+Pacman emerges victorious! Score: 2270
+Pacman emerges victorious! Score: 2070
+Pacman emerges victorious! Score: 1870
+Pacman emerges victorious! Score: 2070
+Pacman emerges victorious! Score: 2070
+Pacman emerges victorious! Score: 1870
+Pacman died! Score: 1210
+Pacman emerges victorious! Score: 1870
+Pacman emerges victorious! Score: 2070
+Pacman emerges victorious! Score: 2070
+Pacman emerges victorious! Score: 2070
+Pacman emerges victorious! Score: 1870
+Pacman emerges victorious! Score: 2270
+Pacman emerges victorious! Score: 2070
+Pacman emerges victorious! Score: 1870
+Pacman emerges victorious! Score: 2070
+Pacman died! Score: 650
+Pacman emerges victorious! Score: 1870
+Pacman emerges victorious! Score: 2270
+Pacman emerges victorious! Score: 2070
+Pacman emerges victorious! Score: 2070
+Pacman emerges victorious! Score: 2070
+Pacman emerges victorious! Score: 2270
+Pacman emerges victorious! Score: 1870
+Pacman emerges victorious! Score: 2070
+Pacman emerges victorious! Score: 2070
+Pacman emerges victorious! Score: 2070
+Pacman emerges victorious! Score: 2070
+Pacman emerges victorious! Score: 1870
+Pacman emerges victorious! Score: 2270
+Pacman emerges victorious! Score: 1870
+Pacman emerges victorious! Score: 2070
+Pacman emerges victorious! Score: 2270

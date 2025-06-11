@@ -592,6 +592,7 @@ def readCommand(argv):
         ghost_types = options.ghost.split(',')
         for idx, ghost_class_name in enumerate(ghost_types):
             ghostType = loadAgent(ghost_class_name.strip(), noKeyboard)
+            print("Loading ghost type:", ghostType)
             # Nếu muốn truyền thêm tham số cho từng ghost, sửa dòng dưới thành ghostType(idx+1, ...) hoặc truyền dict option!
             args['ghosts'].append(ghostType(idx + 1))
         # Nếu truyền ít hơn số ghost, tự động thêm ghost cuối cùng cho đủ

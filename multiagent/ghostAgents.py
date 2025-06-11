@@ -352,6 +352,7 @@ class MinimaxGhost(GhostAgent):
         ghosts = [state.getGhostPosition(i) for i in range(1, state.getNumAgents())]
         foodList = state.getFood().asList()
         capsules = state.getCapsules()
+
         pacmanScore = state.getScore()
 
         numFood = len(foodList)
@@ -361,15 +362,17 @@ class MinimaxGhost(GhostAgent):
         #2
         if foodList:
             minFoodDist = min(util.manhattanDistance(pacmanPos, food) for food in foodList)
-            score -= 10.0 / (minFoodDist + 1)
+            score += 10.0 / (minFoodDist + 1)
         else:
-            score -= 200  # Pacman ăn hết food, rất xấu cho ghost
+            score += 200  # Pacman ăn hết food, rất xấu cho ghost
 
         if capsules:
             minCapDist = min(util.manhattanDistance(pacmanPos, cap) for cap in capsules)
-            score -= 20.0 / (minCapDist + 1)
+            score += 20.0 / (minCapDist + 1)
         else:
-            score -= 100  # Pacman ăn hết capsule, ghost dễ bị ăn
+            # score += 100  # Pacman ăn hết capsule, ghost dễ bị ăn
+            pass
+        
         # 3
         ghostState = state.getGhostState(self.index)
         distToPacman = util.manhattanDistance(ghostPos, pacmanPos)

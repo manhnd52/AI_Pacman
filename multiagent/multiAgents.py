@@ -60,6 +60,7 @@ class ReflexAgent(Agent):
         newGhostStates = successorGameState.getGhostStates()
         newScaredTimes = [ghostState.scaredTimer for ghostState in newGhostStates]
 
+        
         # Compute distances to all food
         foodList = newFood.asList()
         foodDistances = [manhattanDistance(newPos, food) for food in foodList]
@@ -83,7 +84,6 @@ class ReflexAgent(Agent):
                 ghostScore += 20 - dist  # Encourage chasing scared ghosts
 
         stopPenalty = -10 if action == Directions.STOP else 0
-
         return successorGameState.getScore() + foodScore + ghostScore + stopPenalty
 
 
