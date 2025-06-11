@@ -148,7 +148,7 @@ class DirectionalGhost(GhostAgent):
         dist.normalize()
         return dist
     
-class SuperGhost(GhostAgent):
+class AStarGhost(GhostAgent):
     "A ghost that prefers to rush Pacman, or flee when scared, with a higher probability."
 
     def __init__(self, index, prob_attack=1, prob_scaredFlee=1):
@@ -194,7 +194,7 @@ class SuperGhost(GhostAgent):
         return dist
 
     
-class SuperGhost2(GhostAgent):
+class BlockingGhost(GhostAgent):
     "A ghost that prefers to rush Pacman, or flee when scared, with a higher probability."
 
     def __init__(self, index, prob_attack=1, prob_scaredFlee=1):
@@ -209,7 +209,6 @@ class SuperGhost2(GhostAgent):
     def predictPacmanPosition(self, state : GameState, step=5):
         pos = state.getPacmanPosition()
         successor = state
-                            #pacmanDirection = successor.getPacmanState().configuration.direction
 
         for _ in range(step):
             pacmanLLegalActions = successor.getLegalActions(0)
@@ -298,7 +297,7 @@ class SuperGhost2(GhostAgent):
         if isScared:
             speed = 0.5
 
-        # Sử dụng thuật toán A* để tìm đường đi đến Pacman
+        # Tìm cách chặn Pacman
         searchPath = self.blockPacmanRoute(state)
         bestAction = (searchPath[0][0] - pos[0], searchPath[0][1] - pos[1])  if searchPath else Directions.STOP
         bestAction = Actions.vectorToDirection(bestAction)
