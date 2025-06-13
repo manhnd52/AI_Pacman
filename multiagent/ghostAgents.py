@@ -370,10 +370,9 @@ class MinimaxGhost(GhostAgent):
             if d_pac <= 3:                       # tránh va chạm khi sợ
                 score += 10000
         else:
-            # Càng gần Pac-Man điểm càng THẤP => MIN rút ngắn khoảng cách
             score -= 600 / (d_pac + 1)
 
-        # --- 3. Yếu tố phụ (không quá lớn) ------------------------------------
+        # --- 3.
         food  = state.getFood().asList()
         caps  = state.getCapsules()
 

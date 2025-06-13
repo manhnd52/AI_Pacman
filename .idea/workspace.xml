@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b14f4dbb-6c9e-4991-ad6e-6afb3026a58a" name="Changes" comment="&#10;.">
+    <list default="true" id="b14f4dbb-6c9e-4991-ad6e-6afb3026a58a" name="Changes" comment="update evaluation minimax">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/multiagent/ghostAgents.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiagent/ghostAgents.py" afterDir="false" />
     </list>
@@ -218,7 +218,7 @@
       <workItem from="1749482049538" duration="9729000" />
       <workItem from="1749562433952" duration="5281000" />
       <workItem from="1749602364179" duration="8042000" />
-      <workItem from="1749611863579" duration="7939000" />
+      <workItem from="1749611863579" duration="9777000" />
     </task>
     <task id="LOCAL-00001" summary="Update AlphaBetaGhost + MinimaxGhost">
       <option name="closed" value="true" />
@@ -244,7 +244,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749608742908</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="update evaluation minimax">
+      <option name="closed" value="true" />
+      <created>1749623692005</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1749623692005</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -253,7 +261,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Update AlphaBetaGhost + MinimaxGhost" />
     <MESSAGE value="&#10;." />
-    <option name="LAST_COMMIT_MESSAGE" value="&#10;." />
+    <MESSAGE value="update evaluation minimax" />
+    <option name="LAST_COMMIT_MESSAGE" value="update evaluation minimax" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/AI_Pacman$pacman.coverage" NAME="pacman Coverage Results" MODIFIED="1749025953891" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/multiagent" />
