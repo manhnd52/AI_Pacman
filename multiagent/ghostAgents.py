@@ -352,50 +352,66 @@ class MinimaxGhost(GhostAgent):
         # --- Vị trí & khoảng cách cơ bản ---
         pac     = state.getPacmanPosition()
         ghost   = state.getGhostPosition(self.index)
-        d_spawn = util.manhattanDistance(ghost, (9, 5))
+        # d_spawn = util.manhattanDistance(ghost, (9, 5))
+        d_spawn = util.manhattanDistance(ghost, state.getInitialGhostPosition(self.index))
         d_pac   = util.manhattanDistance(ghost, pac)
 
         gState    = state.getGhostState(self.index)
         isScared  = gState.scaredTimer > 0
         scaredT   = gState.scaredTimer
 
+        walls = state.getWalls()
         score = 0
 
         # --- 1.
-        score += 3000 / (d_spawn + 1)
+        if not isScared:
+            score += 3000 / (d_spawn + 1)  # Bình thường: ép rời spawn mạnh
+        else:
+            score += 800 / (d_spawn + 1)
 
         # --- 2.
         if isScared:
-            score += 600 / (d_pac + 1)
+            urgency = min(3.0, scaredT / 10.0)
+            score += (1800 * urgency) / (d_pac + 1)
             if d_pac <= 3:                       # tránh va chạm khi sợ
-                score += 10000
+                score += 20000 * urgency
+
+            corners = [
+                (1, 1),
+                (1, walls.height - 2),
+                (walls.width - 2, 1),
+                (walls.width - 2, walls.height - 2)
+            ]
+            min_corner_dist = min(util.manhattanDistance(ghost, corner) for corner in corners)
+            score -= 400 / (min_corner_dist + 1)
         else:
-            score -= 600 / (d_pac + 1)
+            score -= 800 / (d_pac + 1)
 
         # --- 3.
-        food  = state.getFood().asList()
-        caps  = state.getCapsules()
+        if not isScared:
+            food = state.getFood().asList()
+            caps = state.getCapsules()
 
-        if food:
-            minFood = min(util.manhattanDistance(pac, f) for f in food)
-            score -= 60 / (minFood + 1)
+            if food:
+                minFood = min(util.manhattanDistance(pac, f) for f in food)
+                score -= 60 / (minFood + 1)
 
-        if caps:
-            minCap = min(util.manhattanDistance(pac, c) for c in caps)
-            score -= 80 / (minCap + 1)
+            if caps:
+                minCap = min(util.manhattanDistance(pac, c) for c in caps)
+                score -= 80 / (minCap + 1)
 
         # Pac-Man kẹt góc / tường
-        walls = state.getWalls()
-        x, y  = pac
-        adj   = sum(1 for dx, dy in [(-1,0),(1,0),(0,-1),(0,1)] if walls[x+dx][y+dy])
-        if adj >= 2:
-            score -= 40
+        if not isScared:
+            x, y = pac
+            adj = sum(1 for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)] if walls[x + dx][y + dy])
+            if adj >= 2:
+                score -= 60
 
-        # Nhiều ghost bọc quanh Pac-Man
-        ghosts = [state.getGhostPosition(i) for i in range(1, state.getNumAgents())]
-        near   = sum(1 for i, gpos in enumerate(ghosts)
-                     if i+1 != self.index and util.manhattanDistance(gpos, pac) <= 2)
-        score -= 150 * near
+            # Nhiều ghost bọc quanh Pac-Man
+            ghosts = [state.getGhostPosition(i) for i in range(1, state.getNumAgents())]
+            near = sum(1 for i, gpos in enumerate(ghosts)
+                       if i + 1 != self.index and util.manhattanDistance(gpos, pac) <= 2)
+            score -= 200 * near
 
         # --- 4. Kết thúc trận --------------------------------------------------
         if state.isWin():

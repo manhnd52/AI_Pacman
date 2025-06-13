@@ -219,6 +219,7 @@
       <workItem from="1749562433952" duration="5281000" />
       <workItem from="1749602364179" duration="8042000" />
       <workItem from="1749611863579" duration="9777000" />
+      <workItem from="1749812179403" duration="1077000" />
     </task>
     <task id="LOCAL-00001" summary="Update AlphaBetaGhost + MinimaxGhost">
       <option name="closed" value="true" />
@@ -252,7 +253,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749623692005</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="update evaluation minimax">
+      <option name="closed" value="true" />
+      <created>1749812205123</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1749812205123</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
