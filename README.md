@@ -72,6 +72,6 @@ python pacman.py -p ReflexAgent -g MinimaxGhost,BlockingGhost -n 50
 
 ## 3.  Demo
 
-* AlphaBetaAgent vs DirectionalGhost
-* AlphaBetaAgent vs AStarGhost + BlockingGhost
+* [AlphaBetaAgent vs DirectionalGhost](demo/demo1.mp4)
+* [AlphaBetaAgent vs AStarGhost + BlockingGhost](demo/demo2.mp4)
 
