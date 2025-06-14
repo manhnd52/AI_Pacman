@@ -1,65 +1,88 @@
-1.Cài đặt 
+Dưới đây là phiên bản đã được format đẹp bằng **Markdown** để bạn dùng làm file `README.md` cho repo GitHub:
 
-Dự án gốc: project 2 bài tập Introduction to AI đại học berkeley 
+---
 
-Link dự án: https://inst.eecs.berkeley.edu/~cs188/fa24/projects/proj2/ 
+# AI Pacman - Multi-Agent Project
 
-Dự án của nhóm, với cài đặt thuật toán các thuật toán tự chơi cho pacman và các thuật toán cải tiến của ghost. 
+### 📌 Dự án gốc:
 
-Clone dự án:  
+Bài tập **Project 2 - Introduction to AI** của Đại học Berkeley.
+🔗 [Link gốc dự án](https://inst.eecs.berkeley.edu/~cs188/fa24/projects/proj2/)
 
-git clone https://github.com/manhnd52/AI_Pacman 
+Dự án này là bản mở rộng có chỉnh sửa của nhóm, tập trung vào:
 
-cd AI_Pacman  
+* Cài đặt các thuật toán tự chơi cho Pacman.
+* Phát triển và thử nghiệm các chiến lược thông minh hơn cho Ghost.
 
-cd multiagent  
+---
 
-Thử nghiệm trò chơi 
+## 1. 🚀 Cài đặt
 
-Người chơi đấu với bot: 
+### 📂 Clone dự án
 
-Mặc định: python pacman.py -n <số lượt chơi> 
+```bash
+git clone https://github.com/manhnd52/AI_Pacman
+cd AI_Pacman
+cd multiagent
+```
 
-Tùy chọn ghost: python pacman.py -g <ghostAgent> 
+### 🎮 Thử nghiệm trò chơi
 
-<ghostAgent>: RandomGhost: ma di chuyển random 
+#### Người chơi đấu với bot:
 
-<ghostAgent>: DirectionalGhost: ma đuổi theo pacman với tỷ lệ 0.8 
+* Chạy mặc định:
 
-<ghostAgent>: AStarGhost: ma đuổi theo với thuật toán A* 
+```bash
+python pacman.py -n <số lượt chơi>
+```
 
-<ghostAgent>:AStarGhost,BlockingGhost: kết hợp ma đuổi theo và ma block pacman 
+#### Tùy chọn Ghost Agent:
 
-2.Đánh giá thuật toán với pacman tự chơi: 
+```bash
+python pacman.py -g <TênGhost>
+```
 
-Các câu lệnh: 
+* `RandomGhost`: ma di chuyển ngẫu nhiên
+* `DirectionalGhost`: ma đuổi theo Pacman với xác suất 0.8
+* `AStarGhost`: ma đuổi theo Pacman bằng thuật toán A\*
+* `AStarGhost,BlockingGhost`: kết hợp giữa ma đuổi và ma chặn đường
 
-python pacman.py -p AlphaBetaAgent -g DirectionalGhost –n 50 
+---
 
-python pacman.py -p AlphaBetaAgent -g AStarGhost,BlockingGhost –n 50 
+## 2. 📊 Đánh giá các thuật toán với Pacman tự chơi
 
-python pacman.py -p AlphaBetaAgent -g MinimaxGhost,BlockingGhost –n 50 
+### 📜 Các câu lệnh thử nghiệm:
 
-python pacman.py -p ReflexAgent -g MinimaxGhost,BlockingGhost –n 50 
+```bash
+python pacman.py -p AlphaBetaAgent -g DirectionalGhost -n 50
+python pacman.py -p AlphaBetaAgent -g AStarGhost,BlockingGhost -n 50
+python pacman.py -p AlphaBetaAgent -g MinimaxGhost,BlockingGhost -n 50
+python pacman.py -p ReflexAgent -g MinimaxGhost,BlockingGhost -n 50
+```
 
-Phương pháp đánh giá: Chạy nhiều ván game bằng câu lệnh hỗ trợ của Base Project → nhận xét tỉ lệ thắng của PACMAN 
+> 🎯 **Phương pháp đánh giá**:
+> Chạy nhiều ván game, sau đó nhận xét tỉ lệ thắng của Pacman dựa trên kết quả.
 
-Kết quả: 
+### 📈 Kết quả:
 
-| Ghost Agent                        | ReflexAgent | AlphaBetaAgent |
-|-----------------------------------|-------------|----------------|
-| DirectionalGhost                  | 0.3         | 0.58           |
-| AstarGhost<sup>+</sup> + BlockingGhost     | 0           | 0.08           |
-| MinimaxGhost<sup>+</sup> + BlockingGhost  | Thua/Hòa     | 1              |
+| Ghost Agent                  | ReflexAgent | AlphaBetaAgent |
+| ---------------------------- | ----------- | -------------- |
+| DirectionalGhost             | 0.3         | 0.58           |
+| AStarGhost + BlockingGhost   | 0           | 0.08           |
+| MinimaxGhost + BlockingGhost | Thua/Hòa    | 1.0            |
 
- 
+📌 **Lưu ý**:
+"Thua/Hòa" là trạng thái ghost không bắt được Pacman, nhưng liên tục di chuyển qua lại ở food, khiến Pacman không thể ăn hết thức ăn và trò chơi không thể kết thúc.
 
-Thua/Hòa là trạng thái mà ghost không thể tìm bắt được pacman, nhưng luôn di chuyển qua lại ở vị trí food, khiến cho pacman không thể kết thúc trò chơi. 
+---
 
-3.Demo:
+## 3. 🎥 Demo
 
-[alphabeta VS directional](demo/demo1.mp4)
+* AlphaBetaAgent vs DirectionalGhost
+* AlphaBetaAgent vs AStarGhost + BlockingGhost
 
-[alphabeta VS blocking+A_star](demo/demo2.mp4)
+> *(Video sẽ được cập nhật nếu có)*
 
+---
 
+Nếu bạn cần thêm phần hướng dẫn cài Python hoặc cách thiết lập môi trường ảo (`venv`, `pip`, v.v.), mình có thể bổ sung luôn nhé!
