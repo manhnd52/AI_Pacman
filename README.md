@@ -54,10 +54,10 @@ python pacman.py -p AlphaBetaAgent -g MinimaxGhost,BlockingGhost -n 50
 python pacman.py -p ReflexAgent -g MinimaxGhost,BlockingGhost -n 50
 ```
 
-> 🎯 **Phương pháp đánh giá**:
+> **Phương pháp đánh giá**:
 > Chạy nhiều ván game, sau đó nhận xét tỉ lệ thắng của Pacman dựa trên kết quả.
 
-### 📈 Kết quả:
+### Kết quả:
 
 | Ghost Agent                  | ReflexAgent | AlphaBetaAgent |
 | ---------------------------- | ----------- | -------------- |
@@ -65,7 +65,7 @@ python pacman.py -p ReflexAgent -g MinimaxGhost,BlockingGhost -n 50
 | AStarGhost + BlockingGhost   | 0           | 0.08           |
 | MinimaxGhost + BlockingGhost | Thua/Hòa    | 1.0            |
 
-📌 **Lưu ý**:
+**Lưu ý**:
 "Thua/Hòa" là trạng thái ghost không bắt được Pacman, nhưng liên tục di chuyển qua lại ở food, khiến Pacman không thể ăn hết thức ăn và trò chơi không thể kết thúc.
 
 
