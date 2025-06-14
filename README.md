@@ -1,10 +1,6 @@
-Dưới đây là phiên bản đã được format đẹp bằng **Markdown** để bạn dùng làm file `README.md` cho repo GitHub:
+# AI Pacman 
 
----
-
-# AI Pacman - Multi-Agent Project
-
-### 📌 Dự án gốc:
+### Dự án gốc:
 
 Bài tập **Project 2 - Introduction to AI** của Đại học Berkeley.
 🔗 [Link gốc dự án](https://inst.eecs.berkeley.edu/~cs188/fa24/projects/proj2/)
@@ -16,9 +12,9 @@ Dự án này là bản mở rộng có chỉnh sửa của nhóm, tập trung v
 
 ---
 
-## 1. 🚀 Cài đặt
+## 1. Cài đặt
 
-### 📂 Clone dự án
+### Clone dự án
 
 ```bash
 git clone https://github.com/manhnd52/AI_Pacman
@@ -26,7 +22,7 @@ cd AI_Pacman
 cd multiagent
 ```
 
-### 🎮 Thử nghiệm trò chơi
+###  Thử nghiệm trò chơi
 
 #### Người chơi đấu với bot:
 
@@ -49,9 +45,9 @@ python pacman.py -g <TênGhost>
 
 ---
 
-## 2. 📊 Đánh giá các thuật toán với Pacman tự chơi
+## 2. Đánh giá các thuật toán với Pacman tự chơi
 
-### 📜 Các câu lệnh thử nghiệm:
+### Các câu lệnh thử nghiệm:
 
 ```bash
 python pacman.py -p AlphaBetaAgent -g DirectionalGhost -n 50
@@ -76,13 +72,8 @@ python pacman.py -p ReflexAgent -g MinimaxGhost,BlockingGhost -n 50
 
 ---
 
-## 3. 🎥 Demo
+## 3.  Demo
 
 * AlphaBetaAgent vs DirectionalGhost
 * AlphaBetaAgent vs AStarGhost + BlockingGhost
 
-> *(Video sẽ được cập nhật nếu có)*
-
----
-
-Nếu bạn cần thêm phần hướng dẫn cài Python hoặc cách thiết lập môi trường ảo (`venv`, `pip`, v.v.), mình có thể bổ sung luôn nhé!
