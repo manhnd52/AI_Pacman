@@ -10,7 +10,6 @@ Dự án này là bản mở rộng có chỉnh sửa của nhóm, tập trung v
 * Cài đặt các thuật toán tự chơi cho Pacman.
 * Phát triển và thử nghiệm các chiến lược thông minh hơn cho Ghost.
 
----
 
 ## 1. Cài đặt
 
@@ -43,7 +42,6 @@ python pacman.py -g <TênGhost>
 * `AStarGhost`: ma đuổi theo Pacman bằng thuật toán A\*
 * `AStarGhost,BlockingGhost`: kết hợp giữa ma đuổi và ma chặn đường
 
----
 
 ## 2. Đánh giá các thuật toán với Pacman tự chơi
 
@@ -70,7 +68,7 @@ python pacman.py -p ReflexAgent -g MinimaxGhost,BlockingGhost -n 50
 📌 **Lưu ý**:
 "Thua/Hòa" là trạng thái ghost không bắt được Pacman, nhưng liên tục di chuyển qua lại ở food, khiến Pacman không thể ăn hết thức ăn và trò chơi không thể kết thúc.
 
----
+
 
 ## 3.  Demo
 
